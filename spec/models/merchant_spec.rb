@@ -1,7 +1,9 @@
+require 'rails_helper'
+
 describe Merchant, type: :model do
   describe "relationships" do
-    it { has_many :invoices }
-    it { has_many :items }
+    it { have_many :invoices }
+    it { have_many :items }
   end 
 end
 
