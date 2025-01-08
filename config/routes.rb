@@ -7,13 +7,13 @@ Rails.application.routes.draw do
 
   # Merchants
   get "/api/v1/merchants", to: "api/v1/merchants#index"
-
+  post "/api/v1/merchants", to: "api/v1/merchants#create" 
+  
   # Items
   get "/api/v1/items", to: "api/v1/items#index"
   get "/api/v1/items/:id", to: "api/v1/items#show"
   post "/api/v1/items", to: "api/v1/items#create"
   delete "/api/v1/items/:id", to: "api/v1/items#destroy"
-
   # Defines the root path route ("/")
   # root "posts#index"
 end
