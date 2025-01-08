@@ -26,7 +26,8 @@ class Api::V1::ItemsController < ApplicationController
   
     render json: {
       data:
-      { id: item.id.to_s,
+      { 
+        id: item.id.to_s,
         type: "item",
         attributes: {
           name: item.name,
@@ -36,5 +37,38 @@ class Api::V1::ItemsController < ApplicationController
         }
       }
     }
+  end
+
+  def create
+    newItem = Item.new(item_params)
+  
+    if newItem.save
+      render json: {
+        data: {
+          id: newItem.id.to_s,
+          type: "item",
+          attributes: {
+            name: newItem.name,
+            description: newItem.description,
+            unit_price: newItem.unit_price,
+            merchant_id: newItem.merchant_id
+          }
+        }
+      }, status: :created
+    else
+      render json: {
+        errors: newItem.errors.full_messages
+      }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    render json: Item.delete(params[:id])
+  end
+
+  private
+
+  def item_params
+    params.require(:item).permit(:name, :description, :unit_price, :merchant_id)
   end
 end
