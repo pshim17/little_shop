@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "Create a Merchant", type: :request do
   it "can create a new merchant" do
-    details = {name: "Amazon"}
+    merchant_name = {name: "Amazon"}
 
-    post "/api/v1/merchants",params: details 
+    post "/api/v1/merchants",params: merchant_name 
 
     expect(response).to be_successful
     expect(response.status).to eq(201)
