@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   delete "/api/v1/items/:id", to: "api/v1/items#destroy"
 
   post "/api/v1/merchants", to: "api/v1/merchants#create" 
+  patch "/api/v1/merchants", to: "api/v1/merchants#update"
   # Defines the root path route ("/")
   # root "posts#index"
 end
