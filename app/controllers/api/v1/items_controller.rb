@@ -6,19 +6,26 @@ class Api::V1::ItemsController < ApplicationController
       items = Item.all
     end
 
-    itemsFormatted = items.map do |item|
-      {
-        id: item.id.to_s,
-        type: "item",
-        attributes: {
-          name: item.name,
-          description: item.description,
-          unit_price: item.unit_price,
-          merchant_id: item.merchant_id
+    if !items.empty?
+      items_formatted = items.map do |item|
+        {
+          id: item.id.to_s,
+          type: "item",
+          attributes: {
+            name: item.name,
+            description: item.description,
+            unit_price: item.unit_price,
+            merchant_id: item.merchant_id
+          }
         }
-      }
+      end
+      render json: { data: items_formatted }
+    else
+      render json: {
+        message: "Your query could not be completed",
+        errors: ["No items found"]
+      }, status: :unprocessable_entity
     end
-    render json: { data: itemsFormatted }
   end
 
   def show
@@ -57,12 +64,14 @@ class Api::V1::ItemsController < ApplicationController
       }, status: :created
     else
       render json: {
+        message: "Your query could not be completed",
         errors: newItem.errors.full_messages
       }, status: :unprocessable_entity
     end
   end
 
   def destroy
+
     render json: Item.delete(params[:id])
   end
 
