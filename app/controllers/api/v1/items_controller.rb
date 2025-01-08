@@ -20,4 +20,21 @@ class Api::V1::ItemsController < ApplicationController
     end
     render json: { data: itemsFormatted }
   end
+
+  def show
+    item = Item.find(params[:id])
+  
+    render json: {
+      data:
+      { id: item.id.to_s,
+        type: "item",
+        attributes: {
+          name: item.name,
+          description: item.description,
+          unit_price: item.unit_price,
+          merchant_id: item.merchant_id
+        }
+      }
+    }
+  end
 end
