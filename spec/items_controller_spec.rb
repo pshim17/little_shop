@@ -1,0 +1,34 @@
+require 'rails_helper'
+
+describe "Little Shop API", type: :request do    
+
+  it "can update an item" do
+    # Create a merchant since the item belongs to a merchant
+    test_merchant = Merchant.create!(name: "Test Merchant")
+    
+    # Create an initial item to test updates
+    test_item_1 = Item.create!(
+    name: "Old Item Name",
+    description: "Old description of the item.",
+    unit_price: 50.00,
+    merchant_id: test_merchant.id
+  )
+    # Define the update parameters
+    updated_attributes = {
+    name: "Shiny NEW Itemy",
+    description: "It does a lot of new things!",
+    unit_price: 65.23
+    }
+    # Send a PATCH request to update the item
+    patch "/api/v1/items/#{test_item_1.id}", params: { item: updated_attributes }
+
+    # Reload the item to reflect updated changes
+    test_item_1.reload
+
+    # Expect the response to return the correct updated attributes
+    expect(response).to be_successful
+    expect(test_item_1.name).to eq(updated_attributes[:name])
+    expect(test_item_1.description).to eq(updated_attributes[:description])
+    expect(test_item_1.unit_price).to eq(updated_attributes[:unit_price])
+  end
+end
