@@ -30,22 +30,15 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 gem "jsonapi-serializer"
 
-
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
 
-<<<<<<< HEAD
-gem "jsonapi-serializer"
-
-=======
 # Use jsonapi-serializer for formatting responses in JSON:API standard
 gem "jsonapi-serializer"
 
-
->>>>>>> 50a1fc8 (Add json formatting to update method.)
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]

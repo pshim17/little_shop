@@ -7,22 +7,15 @@ Rails.application.routes.draw do
 
   # Merchants
   get "/api/v1/merchants", to: "api/v1/merchants#index"
-<<<<<<< HEAD
   post "/api/v1/merchants", to: "api/v1/merchants#create" 
   
   # Items
   get "/api/v1/items", to: "api/v1/items#index"
   get "/api/v1/items/:id", to: "api/v1/items#show"
   post "/api/v1/items", to: "api/v1/items#create"
-  delete "/api/v1/items/:id", to: "api/v1/items#destroy"
-=======
-
-  get "/api/v1/merchants", to: "api/v1/merchants#index"
-
-
   patch "/api/v1/items/:id", to: "api/v1/items#update"
+  delete "/api/v1/items/:id", to: "api/v1/items#destroy"
 
->>>>>>> 73bcb37 (Add the update method and private item_params method to the items_controller, add PATCH route for updating items in API, and made merchant singular in the item model.)
   # Defines the root path route ("/")
   # root "posts#index"
 end
