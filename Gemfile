@@ -36,6 +36,7 @@ gem "jsonapi-serializer"
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
 
+# Use jsonapi-serializer for formatting responses in JSON:API standard
 gem "jsonapi-serializer"
 
 group :development, :test do
