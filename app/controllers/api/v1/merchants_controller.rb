@@ -15,16 +15,18 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def update
-    merchant = Merchant.find_by(id: params[:id])
-
-    if merchant
-      if merchant.update!(merchant_params)
-        render json: MerchantSerializer.new(merchant), status: :ok  #200
-      else
-        render json: { error: "unprocessable entity" }, status: :unprocessable_entity  #422
+    begin
+      merchant = Merchant.find(params[:id])
+      if merchant 
+        if params[:name] 
+          merchant.update!(merchant_params) 
+          render json: MerchantSerializer.new(merchant), status: :ok  #200
+        else
+          render json: { error: "unprocessable entity" }, status: :unprocessable_entity  #422
+        end
       end
-    else
-      render json: { error: "merchant not found" }, status: :not_found  #404
+    rescue ActiveRecord::RecordNotFound => exception
+      render json: ErrorSerializer.new(exception), status: :not_found
     end
   end
   
@@ -32,5 +34,6 @@ class Api::V1::MerchantsController < ApplicationController
 
   def merchant_params
     params.permit(:name)
+    
   end
 end
