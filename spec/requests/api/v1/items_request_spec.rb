@@ -46,10 +46,10 @@ RSpec.describe "items", type: :request do
     Item.destroy_all
 
     get "/api/v1/items"
-
     expect(response.status).to eq(422)
 
     json_response = JSON.parse(response.body)
+
     expect(json_response['message']).to eq("Your query could not be completed")
     expect(json_response['errors']).to include("No items found")
   end
@@ -94,19 +94,19 @@ RSpec.describe "items", type: :request do
     expect(attributes[:merchant_id]).to be_a(Integer)
   end
 
-  it "can handle an error: a 404 error when trying to get an id that does not exist" do
+  it "can handle an error: a 404 error when trying to get an id that does not exist" do    
     get "/api/v1/items/100" 
+    expect(response.status).to eq(404)
 
     error_response = JSON.parse(response.body, symbolize_names: true)
     json_response = JSON.parse(response.body)
 
-    expect(response.status).to eq(404)
     expect(error_response[:message]).to eq("Your query could not be completed")
     expect(json_response['errors']).to include("Item not found")
 
     get "/api/v1/items/item1" 
-
     expect(response.status).to eq(404)
+
     expect(error_response[:message]).to eq("Your query could not be completed")
     expect(json_response['errors']).to include("Item not found")
   end
@@ -130,13 +130,9 @@ RSpec.describe "items", type: :request do
 
     item_new = JSON.parse(response.body, symbolize_names: true)
 
-    id = item_new[:data][:id]
-
     get "/api/v1/items"
-
-    all_items = JSON.parse(response.body, symbolize_names: true)
-
     expect(response).to have_http_status(200)
+    
     expect(item_new[:data][:attributes][:name]).to eq("Vanilla Ice Cream")
   end
 
@@ -149,13 +145,11 @@ RSpec.describe "items", type: :request do
     }
 
     post "/api/v1/items", params: { item: invalid_attributes }
-
     expect(response.status).to eq(422)
 
     json_response = JSON.parse(response.body)
 
     expect(json_response['message']).to eq("Your query could not be completed")
-    
     expect(json_response['errors']).to include("Name can't be blank")
   end
 
@@ -175,11 +169,10 @@ RSpec.describe "items", type: :request do
   it "can handle error and return  404 error when trying to delete an item that does not exist" do
     delete "/api/v1/items/123" 
   
-    error_response = JSON.parse(response.body, symbolize_names: true)
     json_response = JSON.parse(response.body)
 
     expect(response.status).to eq(404)
-    expect(error_response['message']).to eq("Your query could not be completed")
+    expect(json_response['message']).to eq("Your query could not be completed")
     expect(json_response['errors']).to include("Item not found")
   end
 end
