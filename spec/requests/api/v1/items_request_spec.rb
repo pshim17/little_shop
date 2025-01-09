@@ -179,7 +179,7 @@ RSpec.describe "items", type: :request do
     json_response = JSON.parse(response.body)
 
     expect(response.status).to eq(404)
-    expect(error_response[:message]).to eq("Your query could not be completed")
+    expect(error_response['message']).to eq("Your query could not be completed")
     expect(json_response['errors']).to include("Item not found")
   end
 end
