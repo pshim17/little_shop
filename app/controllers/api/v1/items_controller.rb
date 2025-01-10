@@ -43,6 +43,13 @@ class Api::V1::ItemsController < ApplicationController
     render json: { message: "Item deleted successfully" }, status: :no_content
   end
 
+  def merchant
+    item = Item.find(params[:id]) 
+    
+
+  end
+
+  end
   private
 
   def item_params
