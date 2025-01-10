@@ -8,21 +8,23 @@ RSpec.describe "Find Items", type: :request do
     @item2 = Item.create!(name: "Digital Scale", description: "Precise weight measurements", unit_price: 58.99, merchant: @test_merchant)
     @item3 = Item.create!(name: "Baking Sheet", description: "Perfect for pastries", unit_price: 25.60, merchant: @test_merchant)
     @item4 = Item.create!(name: "Cooking Spoon", description: "Stirring made easy", unit_price: 14.30, merchant: @test_merchant)
+    @item5 = Item.create!(name: "Booking Soon", description: "Steerring made easy", unit_price: 14.30, merchant: @test_merchant)
+
   end
 
   it "can find all items searched by name" do
-    item_name = { name: "Scale" }
+    item_name = { name: "oo" }
 
     get "/api/v1/items/find_all", params: item_name
-
     expect(response.status).to eq(200)
 
-    # require'pry';binding.pry
-    items = JSON.parse(response.body, symbolize_names: true)[:data]
+    items = JSON.parse(response.body, symbolize_names: true)
 
-    items.each do |item|
-      expect(item[:attributes][:name]).to include(item_name[:name])
-    end
+    expect(items[:data].count).to eq(2)
+    expect(items).to be_a(Hash)
+
+    expect(items[:data][0][:attributes][:name]).to eq(@item4.name)
+    expect(items[:data][1][:attributes][:name]).to eq(@item5.name)
   end
 
   # it "can find all items searched by price" do
