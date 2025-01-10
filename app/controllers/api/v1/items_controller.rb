@@ -1,5 +1,4 @@
 class Api::V1::ItemsController < ApplicationController
-
   def index
     if params[:sorted] == 'price'
       items = Item.all.order("unit_price asc")
