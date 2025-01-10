@@ -1,8 +1,7 @@
 class Api::V1::MerchantsController < ApplicationController
   def index
-   merchants = Merchant.all
-
-   render json: { data: merchants }
+    merchants = Merchant.all
+    render json: { data: merchants }
   end
 
   def create
@@ -17,23 +16,30 @@ class Api::V1::MerchantsController < ApplicationController
   def update
     begin
       merchant = Merchant.find(params[:id])
-      if merchant 
-        if params[:name] 
-          merchant.update!(merchant_params) 
-          render json: MerchantSerializer.new(merchant), status: :ok  #200
-        else
-          render json: { error: "unprocessable entity" }, status: :unprocessable_entity  #422
-        end
+      if params[:name]
+        merchant.update!(merchant_params) 
+        render json: MerchantSerializer.new(merchant), status: :ok  #200
+      else
+        render json: { error: "unprocessable entity" }, status: :unprocessable_entity  #422
       end
     rescue ActiveRecord::RecordNotFound => exception
       render json: ErrorSerializer.new(exception), status: :not_found
     end
   end
-  
+
+  def destroy
+    begin
+      merchant = Merchant.find(params[:id])
+      merchant.destroy
+      render json: { message: 'Merchant successfully deleted' }, status: :ok
+    rescue ActiveRecord::RecordNotFound => exception
+      render json: ErrorSerializer.new(exception), status: :not_found
+    end
+  end
+
   private
 
   def merchant_params
     params.permit(:name)
-    
   end
 end
