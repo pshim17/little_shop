@@ -6,10 +6,12 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Merchants
-  get "/api/v1/merchants", to: "api/v1/merchants#index"
-  post "/api/v1/merchants", to: "api/v1/merchants#create" 
-  patch "/api/v1/merchants/:id", to: "api/v1/merchants#update"
-  delete "/api/v1/merchants/:id", to: "api/v1/merchants#destroy"
+  #verb namespace/namespace/endpoint, to: folder/controller#controller_action
+  get "/api/v1/merchants",           to: "api/v1/merchants#index"
+  post "/api/v1/merchants",          to: "api/v1/merchants#create" 
+  patch "/api/v1/merchants/:id",     to: "api/v1/merchants#update"
+  delete "/api/v1/merchants/:id",    to: "api/v1/merchants#destroy"
+  get "/api/v1/merchants/:id/items", to: "api/v1/merchants/items#index"
 
   # Items
   get "/api/v1/items", to: "api/v1/items#index"
