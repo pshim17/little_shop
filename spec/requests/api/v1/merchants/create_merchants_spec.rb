@@ -11,6 +11,7 @@ RSpec.describe "Create a Merchant", type: :request do
     merchant = JSON.parse(response.body, symbolize_names: true)[:data]
     expect(merchant[:attributes][:name]).to eq('Amazon')
   end
+  
   it "returns an error if the name is missing" do
     invalid_params = { name: "" }
 
