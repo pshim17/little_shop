@@ -1,8 +1,15 @@
 class Api::V1::MerchantsController < ApplicationController
   def index
-   merchants = Merchant.all
-
-   render json: { data: merchants }
+    if params[:sorted] == "age"
+      merchants = Merchant.order(created_at: :desc)
+    elsif params[:status] == "returned"
+      merchants = Merchant.joins(:invoices).where(invoices: {status: "returned"}).distinct
+    elsif params[:count] == "true"
+      merchants = Merchant.left_joins(:items).select("merchants.*, COUNT(items.id) AS item_count").group("merchants.id").order(id: :asc)                        
+    else
+      merchants = Merchant.all
+    end
+   render json: MerchantSerializer.new(merchants, { params: { count: params[:count] } })
   end
 
   def create
