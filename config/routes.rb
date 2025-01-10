@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Merchants
-  #verb namespace/namespace/endpoint, to: folder/controller#controller_action
+  #verb namespace/namespace/endpoint, to: folder/folder/controller#controller_action
   get "/api/v1/merchants",           to: "api/v1/merchants#index"
   post "/api/v1/merchants",          to: "api/v1/merchants#create" 
   patch "/api/v1/merchants/:id",     to: "api/v1/merchants#update"
