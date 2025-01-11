@@ -44,12 +44,28 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def merchant
-    item = Item.find(params[:id]) 
-    
-
+    begin
+      item = Item.find(params[:id]) 
+      if item.nil?
+        render json: { errors: [{ message: "Item not found", status: "404" }] }, status: :not_found
+      else
+        # Merchant.find(item.merchant_id)
+        merchant = item.merchant
+        render json: MerchantSerializer.new(merchant), status: :ok
+      end
+    rescue ActiveRecord::RecordNotFound => error 
+      render json: ErrorSerializer.new(error), status: :ok
+      # json: {
+      #   errors: [
+      #     {
+      #       status: "404",
+      #       message: error.message
+      #     }
+      #   ]
+      #   }, status: :404
+    end
   end
 
-  end
   private
 
   def item_params
@@ -67,4 +83,6 @@ class Api::V1::ItemsController < ApplicationController
   def unprocessable_entity_error(exception)
     render_error("Unprocessable entity", :unprocessable_entity)
   end
+
 end
+   

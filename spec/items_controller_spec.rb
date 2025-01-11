@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe "Little Shop API", type: :request do    
-
   it "can update an item" do
     # Create a merchant since the item belongs to a merchant
     test_merchant = Merchant.create!(name: "Test Merchant")
@@ -31,4 +30,29 @@ describe "Little Shop API", type: :request do
     expect(test_item_1.description).to eq(updated_attributes[:description])
     expect(test_item_1.unit_price).to eq(updated_attributes[:unit_price])
   end
+
+
+  it "can get a merchant by item id" do
+    # Create a merchant since the item belongs to a merchant
+    test_merchant = Merchant.create!(name: "Test Merchant")
+    
+    # Create an initial item to ensure we're getting the correct merchant
+    test_item_1 = Item.create!(
+    name: "Old Item Name",
+    description: "Old description of the item.",
+    unit_price: 50.00,
+    merchant_id: test_merchant.id
+  )
+   
+    # Send a GET request to get the merchant data
+    get "/api/v1/items/#{test_item_1.id}/merchant"
+
+    expect(response).to be_successful
+
+    binding pry; require pry
+
+    the_merchant = JSON.parse(response.body, symbolize_names: true)
+    expect(the_merchant[:name]).to eq("Test Merchant") 
+  end
+
 end
