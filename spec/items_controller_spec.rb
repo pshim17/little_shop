@@ -45,11 +45,11 @@ describe "Little Shop API", type: :request do
   )
    
     # Send a GET request to get the merchant data
-    get "/api/v1/items/#{test_item_1.id}/merchant"
+    get "/api/v1/items/#{test_item_1.id}/find_merchant"
 
     expect(response).to be_successful
 
-    binding pry; require pry
+    # binding pry; require pry
 
     the_merchant = JSON.parse(response.body, symbolize_names: true)
     expect(the_merchant[:name]).to eq("Test Merchant") 
