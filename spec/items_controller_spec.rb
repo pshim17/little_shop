@@ -1,17 +1,17 @@
 require 'rails_helper'
 
-describe "Little Shop API", type: :request do    
+RSpec.describe "Little Shop API", type: :request do    
   it "can update an item" do
     # Create a merchant since the item belongs to a merchant
     test_merchant = Merchant.create!(name: "Test Merchant")
     
     # Create an initial item to test updates
     test_item_1 = Item.create!(
-    name: "Old Item Name",
-    description: "Old description of the item.",
-    unit_price: 50.00,
-    merchant_id: test_merchant.id
-  )
+      name: "Old Item Name",
+      description: "Old description of the item.",
+      unit_price: 50.00,
+      merchant_id: test_merchant.id
+    )
     # Define the update parameters
     updated_attributes = {
     name: "Shiny NEW Itemy",
@@ -49,10 +49,21 @@ describe "Little Shop API", type: :request do
 
     expect(response).to be_successful
 
-    # binding pry; require pry
+    binding pry; require pry
 
     the_merchant = JSON.parse(response.body, symbolize_names: true)
     expect(the_merchant[:name]).to eq("Test Merchant") 
   end
+
+  it "will gracefully handle if a Item id doesn't exist" do
+    get "/api/v1/items/3423978540937t3908275394087290457/find_merchant"
+
+    expect(response).to_not be_successful
+    expect(response.status).to eq(404)
+
+    data = JSON.parse(response.body, symbolize_names: true)
+    expect(data[:errors].first[:status]).to eq("404")
+    expect(data[:errors].first[:message]).to eq("Couldn't find Song with 'id'=3423978540937t3908275394087290457")
+  end 
 
 end
