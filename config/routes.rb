@@ -20,6 +20,10 @@ Rails.application.routes.draw do
   delete "/api/v1/items/:id", to: "api/v1/items#destroy"
   get "/api/v1/items/find_all", to: "api/v1/items/search#show"
 
+  # Customers
+  get "/api/v1/merchants/customers", to: "api/v1/merchants/customers#index"
+  get "/api/v1/merchants/:merchant_id/customers", to: "api/v1/merchants/customers#customers_by_merchant"
+
   
   # Defines the root path route ("/")
   # root "posts#index"
