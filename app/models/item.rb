@@ -8,7 +8,11 @@ class Item < ApplicationRecord
     where("name ILIKE ? ", "%#{name}%")
   end
 
-  # def self.find_by_price(price)
-  #   where("unit_price >= ? AND unit_price <= ?")
-  # end
+  def self.find_by_price(price, type)
+    if type == :min_price
+      where("unit_price >= ?", "#{price}")
+    elsif type == :max_price
+      where("unit_price <= ?", "#{price}")
+    end
+  end
 end

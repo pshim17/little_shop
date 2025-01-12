@@ -25,15 +25,15 @@ RSpec.describe "Find Items", type: :request do
 
     expect(items[:data][0][:attributes][:name]).to eq(@item4.name)
     expect(items[:data][1][:attributes][:name]).to eq(@item5.name)
+  en
+
+  it "can find all items searched by price" do
+    item_price = { unit_price: 50 }
+
+    get "/api/v1/items/find_all", params: item_price
+
+    expect(response.status).to eq(200)
+
+    items = JSON.parse(response.body, symbolize_names: true)[:data]
   end
-
-  # it "can find all items searched by price" do
-  #   item_price = { unit_price: 50 }
-
-  #   get "/api/v1/items/find_all", params: item_price
-
-  #   expect(response.status).to eq(200)
-
-  #   items = JSON.parse(response.body, symbolize_names: true)[:data]
-  # end
 end
