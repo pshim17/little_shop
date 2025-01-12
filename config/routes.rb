@@ -19,6 +19,10 @@ Rails.application.routes.draw do
   post "/api/v1/items", to: "api/v1/items#create"
   patch "/api/v1/items/:id", to: "api/v1/items#update"
   delete "/api/v1/items/:id", to: "api/v1/items#destroy"
+
+  # Invoices
+  get "api/v1/merchants/:merchant_id/invoices", to: "api/v1/invoices#index"
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
