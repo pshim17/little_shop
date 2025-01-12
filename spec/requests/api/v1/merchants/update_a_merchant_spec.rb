@@ -19,8 +19,8 @@ RSpec.describe "Update a Merchant", type: :request do
 
       expect(response).to_not be_successful
       expect(response.status).to eq(404)
-      error = JSON.parse(response.body, symbolize_names: true)[:error]
-      expect(error).to eq("Couldn't find Merchant with 'id'=8000")
+      error = JSON.parse(response.body, symbolize_names: true)[:error].first
+      expect(error[:title]).to eq("Couldn't find Merchant with 'id'=8000")
     end
 
     it "fails if no params passed" do
