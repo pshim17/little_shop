@@ -1,20 +1,24 @@
 class Api::V1::MerchantsController < ApplicationController
   def index
     if params[:sorted] == "age"
-      merchants = Merchant.order(created_at: :desc)
+      merchants = Merchant.sort_by_age
     elsif params[:status] == "returned"
-      merchants = Merchant.joins(:invoices).where(invoices: {status: "returned"}).distinct
+      merchants = Merchant.returned_invoices
     elsif params[:count] == "true"
-      merchants = Merchant.left_joins(:items).select("merchants.*, COUNT(items.id) AS item_count").group("merchants.id").order(id: :asc)                        
+      merchants = Merchant.add_item_count
     else
       merchants = Merchant.all
     end
-   render json: MerchantSerializer.new(merchants, { params: { count: params[:count] } })
+    render json: MerchantSerializer.new(merchants, { params: { count: params[:count] } }), status: :ok
   end
 
   def show
-    merchant = Merchant.find(params[:id])
-    render json: MerchantSerializer.new(merchant)
+    begin 
+      merchant = Merchant.find(params[:id])
+      render json: MerchantSerializer.new(merchant)
+    rescue ActiveRecord::RecordNotFound => exception
+      render json: { error: "Merchant not found: #{exception.message}" }, status: :not_found
+    end
   end
 
   def create
