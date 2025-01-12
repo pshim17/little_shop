@@ -25,4 +25,14 @@ RSpec.describe 'Get all items for a merchant', type: :request do
       expect(attrs[:merchant_id]).to eq(amazon.id)
     end
   end
+  it "returns an empty array if the merchant has no items" do
+    merchant = Merchant.create!(name: "Nike")
+  
+    get "/api/v1/merchants/#{merchant.id}/items"
+  
+    expect(response).to be_successful
+    expect(response.status).to eq(200)
+    items = JSON.parse(response.body, symbolize_names: true)[:data]
+    expect(items).to eq([])
+  end
 end

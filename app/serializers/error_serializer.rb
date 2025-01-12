@@ -3,7 +3,7 @@ class ErrorSerializer
 
   def initialize(exception, status)
     @exception = exception
-    @status = status
+    @status    = status
   end
 
   def format_error

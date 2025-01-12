@@ -14,7 +14,7 @@ RSpec.describe "Update a Merchant", type: :request do
   end
 
   describe "Sad Paths" do
-    it "can fails if merchant does not exist" do
+    it "can fail if merchant does not exist" do
       patch "/api/v1/merchants/8000"
 
       expect(response).to_not be_successful
