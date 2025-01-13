@@ -1,13 +1,15 @@
 require 'rails_helper'
 
 describe "Little Shop API", type: :request do
-
   describe "customers index" do
     it "shows all customers" do
+      test_merchant1 = Merchant.create!(name: "Test Merchant1")
+
       customer1 = Customer.create!( {
         "first_name": "Parker",
         "last_name": "Daugherty"
       })
+      
       customer2 = Customer.create!( {
         "first_name": "Kirstin",
         "last_name": "Wehner"
@@ -21,7 +23,7 @@ describe "Little Shop API", type: :request do
         "last_name": "Eloiwan"
       })
 
-      get "/api/v1/merchants/customers" 
+      get "/api/v1/merchants/customers"
 
       expect(response).to be_successful
 
