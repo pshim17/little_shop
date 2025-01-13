@@ -1,4 +1,6 @@
 class Api::V1::MerchantsController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+
   def index
     if params[:sorted] == "age"
       merchants = Merchant.sort_by_age
@@ -27,32 +29,28 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def update
-    begin
-      merchant = Merchant.find(params[:id])
-      if params[:name]
-        merchant.update!(merchant_params) 
-        render json: MerchantSerializer.new(merchant), status: :ok
-      else
-        render json: { error: "unprocessable entity" }, status: :unprocessable_entity
-      end
-    rescue ActiveRecord::RecordNotFound => exception
-      render json: ErrorSerializer.new(exception), status: :not_found
+    merchant = Merchant.find(params[:id])
+    if params[:name]
+      merchant.update!(merchant_params)
+      render json: MerchantSerializer.new(merchant), status: :ok
+    else
+      render json: { error: "unprocessable entity" }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    begin
-      merchant = Merchant.find(params[:id])
-      merchant.destroy
-      head :no_content
-    rescue ActiveRecord::RecordNotFound => exception
-      render json: ErrorSerializer.new(exception), status: :not_found
-    end
+    merchant = Merchant.find(params[:id])
+    merchant.destroy
+    head :no_content
   end
 
   private
 
   def merchant_params
     params.permit(:name)
+  end
+
+  def not_found(exception)
+    render json: ErrorSerializer.new(exception, "404").format_error, status: :not_found
   end
 end
