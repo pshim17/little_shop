@@ -12,14 +12,20 @@ Rails.application.routes.draw do
   patch "/api/v1/merchants/:id",     to: "api/v1/merchants#update"
   delete "/api/v1/merchants/:id",    to: "api/v1/merchants#destroy"
   get "/api/v1/merchants/:id/items", to: "api/v1/merchants/items#index"
+  get "/api/v1/merchants/:id",       to: "api/v1/merchants#show"
+  get "/api/v1/merchants/find",      to: "api/v1/merchants/search#show"
 
   # Items
-  get "/api/v1/items", to: "api/v1/items#index"
-  get "/api/v1/items/:id", to: "api/v1/items#show"
-  post "/api/v1/items", to: "api/v1/items#create"
-  patch "/api/v1/items/:id", to: "api/v1/items#update"
-  delete "/api/v1/items/:id", to: "api/v1/items#destroy"
-  
+  get "/api/v1/items/find_all", to: "api/v1/items/search#show"
+  get "/api/v1/items",          to: "api/v1/items#index"
+  get "/api/v1/items/:id",      to: "api/v1/items#show"
+  post "/api/v1/items",         to: "api/v1/items#create"
+  patch "/api/v1/items/:id",    to: "api/v1/items#update"
+  delete "/api/v1/items/:id",   to: "api/v1/items#destroy"
+
+  # Invoices
+  get "api/v1/merchants/:merchant_id/invoices", to: "api/v1/invoices#index"
+
   # Defines the root path route ("/")
   # root "posts#index"
 end

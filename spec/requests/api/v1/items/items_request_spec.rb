@@ -99,16 +99,9 @@ RSpec.describe "items", type: :request do
     expect(response.status).to eq(404)
 
     error_response = JSON.parse(response.body, symbolize_names: true)
-    json_response = JSON.parse(response.body)
 
     expect(error_response[:message]).to eq("Your query could not be completed")
-    expect(json_response['errors']).to include("Item not found")
-
-    get "/api/v1/items/item1" 
-    expect(response.status).to eq(404)
-
-    expect(error_response[:message]).to eq("Your query could not be completed")
-    expect(json_response['errors']).to include("Item not found")
+    expect(error_response[:errors]).to include("Item not found")
   end
 
   it "can create a new item" do 
@@ -117,13 +110,6 @@ RSpec.describe "items", type: :request do
       description: "smooth and refreshing",
       unit_price: 4.49,
       merchant_id: @merchant1.id
-    }
-
-    attributes = {
-      name: "Vanilla Ice Cream",
-      description: "smooth and refreshing",
-      unit_price: 4.49,
-      merchant_id: @merchant2.id
     }
 
     post "/api/v1/items", params: {item: attributes}

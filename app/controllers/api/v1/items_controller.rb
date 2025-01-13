@@ -1,122 +1,63 @@
 class Api::V1::ItemsController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, with: :item_not_found
+  rescue_from ActiveRecord::RecordInvalid, with: :unprocessable_entity_error
 
   def index
-    if params[:sorted] == 'price'
-      items = Item.all.order("unit_price asc")
-    else
-      items = Item.all
-    end
+    items = params[:sorted] == 'price' ? Item.all.order("unit_price asc") : Item.all
 
     if items.empty?
-      render json: {
-        message: "Your query could not be completed",
-        errors: ["No items found"]
-      }, status: :unprocessable_entity
+      render_error("No items found", :unprocessable_entity)
     else
-      itemsFormatted = items.map do |item|
-        {
-          id: item.id.to_s,
-          type: "item",
-          attributes: {
-            name: item.name,
-            description: item.description,
-            unit_price: item.unit_price,
-            merchant_id: item.merchant_id
-          }
-        }
-      end
-      render json: { data: itemsFormatted }
+      render json: ItemSerializer.new(items), status: :ok
     end
   end
 
   def show
-    item = Item.find_by(id: params[:id])
-
-    if item.nil?
-      render json: {
-        message: "Your query could not be completed",
-        errors: ["Item not found"]
-      }, status: :not_found
-    else
-      render json: {
-        data: { 
-          id: item.id.to_s,
-          type: "item",
-          attributes: {
-            name: item.name,
-            description: item.description,
-            unit_price: item.unit_price,
-            merchant_id: item.merchant_id
-          }
-        }
-      }
-    end
+    item = Item.find(params[:id]) 
+    render json: ItemSerializer.new(item), status: :ok
   end
 
   def create
     new_item = Item.new(item_params)
 
     if new_item.save
-      render json: {
-        data: {
-          id: new_item.id.to_s,
-          type: "item",
-          attributes: {
-            name: new_item.name,
-            description: new_item.description,
-            unit_price: new_item.unit_price,
-            merchant_id: new_item.merchant_id
-          }
-        }
-      }, status: :created
+      render json: ItemSerializer.new(new_item), status: :created
     else
-      render json: {
-        message: "Your query could not be completed",
-        errors: new_item.errors.full_messages
-      }, status: :unprocessable_entity
+      render_error(new_item.errors.full_messages.join(", "), :unprocessable_entity)
     end
   end
 
   def update
-    item = Item.find_by(id: params[:id])
-    
-    if item.nil?
-      render json: { errors: [{ status: "404", message: "Item not found" }] }, status: :not_found
-    elsif item.update(item_params)
-      render json: {
-        data: {
-          id: item.id.to_s,
-          type: "item",
-          attributes: {
-            name: item.name,
-            description: item.description,
-            unit_price: item.unit_price,
-            merchant_id: item.merchant_id
-          }
-        }
-      }, status: :ok
+    item = Item.find(params[:id]) 
+
+    if item.update(item_params)
+      render json: ItemSerializer.new(item), status: :ok
     else
-      render json: { errors: item.errors.full_messages }, status: :unprocessable_entity
+      render_error(item.errors.full_messages.join(", "), :unprocessable_entity)
     end
   end
 
   def destroy
-    item = Item.find_by(id: params[:id])
-
-    if item
-      item.destroy
-      render json: { message: "Item deleted successfully" }, status: :no_content
-    else
-      render json: {
-        message: "Your query could not be completed",
-        errors: ["Item not found"]
-      }, status: :not_found
-    end
+    item = Item.find(params[:id]) 
+    item.destroy
+    render json: { message: "Item deleted successfully" }, status: :no_content
   end
 
   private
 
   def item_params
     params.require(:item).permit(:name, :description, :unit_price, :merchant_id)
+  end
+
+  def render_error(message, status)
+    render json: { message: "Your query could not be completed", errors: [message] }, status: status
+  end
+
+  def item_not_found(exception)
+    render_error("Item not found", :not_found)
+  end
+
+  def unprocessable_entity_error(exception)
+    render_error("Unprocessable entity", :unprocessable_entity)
   end
 end
