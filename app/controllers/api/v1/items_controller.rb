@@ -48,23 +48,10 @@ class Api::V1::ItemsController < ApplicationController
       item = Item.find(params[:id]) 
       merchant = item.merchant
       render json: { name: merchant.name}
-      # HAVING TROUBLE WITH SERIALIZER, TEST DOESN'T PASS
-      # render json: MerchantSerializer.new(merchant, params: params), status: :ok
-      # render json: MerchantSerializer.new(merchant), status: :ok
 
     rescue ActiveRecord::RecordNotFound
-      render json: { error: "Item not found"}, status: :not_found
+      render json: { error: "Could not find Item with ID ##{params[:id]}."}, status: :not_found
     end
-    #   item = Item.find(params[:id]) 
-    #   if item.nil?
-    #     render json: { errors: [{ message: "Item not found", status: "404" }] }, status: :not_found
-    #   else
-    #     # Merchant.find(item.merchant_id)
-    #     merchant = item.merchant
-    #     render json: MerchantSerializer.new(merchant), status: :ok
-    #   end
-    # rescue ActiveRecord::RecordNotFound => error 
-    #   render json: { error: "Item not found."}, status: :not_found
   end
 
   private
