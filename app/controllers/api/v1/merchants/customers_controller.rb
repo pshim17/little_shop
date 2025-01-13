@@ -22,7 +22,6 @@ class Api::V1::Merchants::CustomersController < ApplicationController
     merchant_id = params[:merchant_id]
     merchant = Merchant.find_by(id: params[:merchant_id])
     
-
     if merchant.nil?
       render json: { error: "Merchant ID# #{merchant_id} not found."}, status: :not_found
       return

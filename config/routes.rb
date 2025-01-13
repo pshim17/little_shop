@@ -8,13 +8,13 @@ Rails.application.routes.draw do
   # Merchants
   
   #verb namespace/namespace/endpoint, to: folder/folder/controller#controller_action
+  get "/api/v1/merchants/find",      to: "api/v1/merchants/search#show"
   get "/api/v1/merchants",           to: "api/v1/merchants#index"
   post "/api/v1/merchants",          to: "api/v1/merchants#create" 
   patch "/api/v1/merchants/:id",     to: "api/v1/merchants#update"
   delete "/api/v1/merchants/:id",    to: "api/v1/merchants#destroy"
   get "/api/v1/merchants/:id/items", to: "api/v1/merchants/items#index"
   get "/api/v1/merchants/:id",       to: "api/v1/merchants#show"
-  get "/api/v1/merchants/find",      to: "api/v1/merchants/search#show"
 
   # Items
   get "/api/v1/items/:id/find_merchant", to: "api/v1/items#find_merchant"
@@ -29,8 +29,8 @@ Rails.application.routes.draw do
   get "api/v1/merchants/:merchant_id/invoices", to: "api/v1/invoices#index"
 
   # Customers
-  get "/api/v1/merchants/customers",              to: "api/v1/merchants/customers#index"
   get "/api/v1/merchants/:merchant_id/customers", to: "api/v1/merchants/customers#customers_by_merchant"
+  get "/api/v1/merchants/customers", to: "api/v1/merchants/customers#index"
   
   # Defines the root path route ("/")
   # root "posts#index"

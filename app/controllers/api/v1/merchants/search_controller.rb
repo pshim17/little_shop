@@ -3,7 +3,9 @@ class Api::V1::Merchants::SearchController < ApplicationController
     if params[:name].blank?
       return render json: { message: "Name parameter is blank" }, status: :bad_request
     end
-
+    
+    merch = Merchant.find_by_name(params[:name])
+    
     if merch
       render json: MerchantSerializer.new(merch)
     else

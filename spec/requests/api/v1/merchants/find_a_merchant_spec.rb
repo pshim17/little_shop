@@ -15,6 +15,12 @@ RSpec.describe "Find Merchant", type: :request do
 
     merchant = JSON.parse(response.body, symbolize_names: true)[:data]
     expect(merchant[:attributes][:name]).to eq('Adidas') 
+  end
+
+  it "can return 404 if invalid merchant name" do
+    merchant1 = Merchant.create!(name: "Adidas")
+    merchant2 = Merchant.create!(name: "Nike")
+    merchant3 = Merchant.create!(name: "Puma")
 
     invalid_merchant_name = { name: "123" }
 
