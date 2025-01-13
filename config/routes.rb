@@ -26,6 +26,10 @@ Rails.application.routes.draw do
   # Invoices
   get "api/v1/merchants/:merchant_id/invoices", to: "api/v1/invoices#index"
 
+  # Customers
+  get "/api/v1/merchants/customers",              to: "api/v1/merchants/customers#index"
+  get "/api/v1/merchants/:merchant_id/customers", to: "api/v1/merchants/customers#customers_by_merchant"
+  
   # Defines the root path route ("/")
   # root "posts#index"
 end
