@@ -6,21 +6,31 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Merchants
-  get "/api/v1/merchants", to: "api/v1/merchants#index"
-  post "/api/v1/merchants", to: "api/v1/merchants#create" 
-  patch "/api/v1/merchants/:id", to: "api/v1/merchants#update"
-  delete "/api/v1/merchants/:id", to: "api/v1/merchants#destroy"
-  get "/api/v1/merchants/find", to: "api/v1/merchants/search#show"
+  
+  #verb namespace/namespace/endpoint, to: folder/folder/controller#controller_action
+  get "/api/v1/merchants",           to: "api/v1/merchants#index"
+  post "/api/v1/merchants",          to: "api/v1/merchants#create" 
+  patch "/api/v1/merchants/:id",     to: "api/v1/merchants#update"
+  delete "/api/v1/merchants/:id",    to: "api/v1/merchants#destroy"
+  get "/api/v1/merchants/:id/items", to: "api/v1/merchants/items#index"
+  get "/api/v1/merchants/:id",       to: "api/v1/merchants#show"
+  get "/api/v1/merchants/find",      to: "api/v1/merchants/search#show"
 
   # Items
-  get "/api/v1/items", to: "api/v1/items#index"
-  get "/api/v1/items/:id", to: "api/v1/items#show"
   get "/api/v1/items/:id/find_merchant", to: "api/v1/items#find_merchant"
-  post "/api/v1/items", to: "api/v1/items#create"
-  patch "/api/v1/items/:id", to: "api/v1/items#update"
-  delete "/api/v1/items/:id", to: "api/v1/items#destroy"
-  get "/api/v1/items/find_all", to: "api/v1/items/search#show"
+  get "/api/v1/items/find_all",          to: "api/v1/items/search#show"
+  get "/api/v1/items",                   to: "api/v1/items#index"
+  get "/api/v1/items/:id",               to: "api/v1/items#show"
+  post "/api/v1/items",                  to: "api/v1/items#create"
+  patch "/api/v1/items/:id",             to: "api/v1/items#update"
+  delete "/api/v1/items/:id",            to: "api/v1/items#destroy"
 
+  # Invoices
+  get "api/v1/merchants/:merchant_id/invoices", to: "api/v1/invoices#index"
+
+  # Customers
+  get "/api/v1/merchants/customers",              to: "api/v1/merchants/customers#index"
+  get "/api/v1/merchants/:merchant_id/customers", to: "api/v1/merchants/customers#customers_by_merchant"
   
   # Defines the root path route ("/")
   # root "posts#index"
