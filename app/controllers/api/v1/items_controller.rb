@@ -43,6 +43,17 @@ class Api::V1::ItemsController < ApplicationController
     render json: { message: "Item deleted successfully" }, status: :no_content
   end
 
+  def find_merchant
+    begin
+      item = Item.find(params[:id]) 
+      merchant = item.merchant
+      render json: { name: merchant.name}
+
+    rescue ActiveRecord::RecordNotFound
+      render json: { error: "Could not find Item with ID ##{params[:id]}."}, status: :not_found
+    end
+  end
+
   private
 
   def item_params
@@ -60,4 +71,6 @@ class Api::V1::ItemsController < ApplicationController
   def unprocessable_entity_error(exception)
     render_error("Unprocessable entity", :unprocessable_entity)
   end
+
 end
+   
