@@ -13,12 +13,8 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def show
-    begin 
-      merchant = Merchant.find(params[:id])
-      render json: MerchantSerializer.new(merchant)
-    rescue ActiveRecord::RecordNotFound => exception
-      render json: { error: "Merchant not found: #{exception.message}" }, status: :not_found
-    end
+    merchant = Merchant.find(params[:id])
+    render json: MerchantSerializer.new(merchant)
   end
 
   def create
