@@ -27,8 +27,8 @@ class Api::V1::Merchants::CustomersController < ApplicationController
       return
     end
 
-    customers = Customer.joins(:invoices).where(invoices: {merchant_id: merchant_id})
-    
+    customers = Customer.customers_by_merchant(merchant_id)
+
     if customers.empty?
       render json: { data: []}, status: :ok
       return
@@ -44,8 +44,6 @@ class Api::V1::Merchants::CustomersController < ApplicationController
         }
       }
     end
-
     render json: { data: formatted_customers }, status: :ok
   end
-
 end

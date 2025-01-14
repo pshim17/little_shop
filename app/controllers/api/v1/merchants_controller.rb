@@ -24,7 +24,7 @@ class Api::V1::MerchantsController < ApplicationController
       merchant = Merchant.create!(merchant_params)
       render json: MerchantSerializer.new(merchant), status: :created
     rescue
-      render json: { error: "unprocessable entity" }, status: :unprocessable_entity
+      render json: { message: "unprocessable entity", errors: ["unprocessable entity"] }, status: 422
     end
   end
 
@@ -34,7 +34,7 @@ class Api::V1::MerchantsController < ApplicationController
       merchant.update!(merchant_params)
       render json: MerchantSerializer.new(merchant), status: :ok
     else
-      render json: { error: "unprocessable entity" }, status: :unprocessable_entity
+      render json: { message: "unprocessable entity", errors: ["unprocessable entity"] }, status: 422
     end
   end
 

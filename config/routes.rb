@@ -17,12 +17,12 @@ Rails.application.routes.draw do
   get "/api/v1/merchants/:id",       to: "api/v1/merchants#show"
 
   # Items
-  get "/api/v1/items/:id/find_merchant", to: "api/v1/items#find_merchant"
+  get "/api/v1/items/:id/merchant",      to: "api/v1/items#find_merchant"
   get "/api/v1/items/find_all",          to: "api/v1/items/search#show"
   get "/api/v1/items",                   to: "api/v1/items#index"
   get "/api/v1/items/:id",               to: "api/v1/items#show"
   post "/api/v1/items",                  to: "api/v1/items#create"
-  patch "/api/v1/items/:id",             to: "api/v1/items#update"
+  put "/api/v1/items/:id",               to: "api/v1/items#update"
   delete "/api/v1/items/:id",            to: "api/v1/items#destroy"
 
   # Invoices
@@ -30,7 +30,6 @@ Rails.application.routes.draw do
 
   # Customers
   get "/api/v1/merchants/:merchant_id/customers", to: "api/v1/merchants/customers#customers_by_merchant"
-  get "/api/v1/merchants/customers", to: "api/v1/merchants/customers#index"
   
   # Defines the root path route ("/")
   # root "posts#index"
