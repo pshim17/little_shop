@@ -1,56 +1,6 @@
 require 'rails_helper'
 
-describe "Little Shop API", type: :request do
-  describe "customers index" do
-    it "shows all customers" do
-      test_merchant1 = Merchant.create!(name: "Test Merchant1")
-
-      customer1 = Customer.create!( {
-        "first_name": "Parker",
-        "last_name": "Daugherty"
-      })
-      
-      customer2 = Customer.create!( {
-        "first_name": "Kirstin",
-        "last_name": "Wehner"
-      })
-      customer3 = Customer.create!( {
-        "first_name": "Albina",
-        "last_name": "Erdman"
-      })
-      customer4 = Customer.create!( {
-        "first_name": "Karol",
-        "last_name": "Eloiwan"
-      })
-
-      get "/api/v1/merchants/customers"
-
-      expect(response).to be_successful
-
-      customers = JSON.parse(response.body, symbolize_names: true)
-
-      expect(customers[:data]).to be_an(Array)
-      expect(customers[:data].size).to eq(4)
-
-      expect(customers[:data][0][:attributes][:first_name]).to eq(customer1.first_name)
-      expect(customers[:data][0][:attributes][:last_name]).to eq(customer1.last_name)
-      expect(customers[:data][0][:attributes][:first_name]).to eq("Parker")
-      expect(customers[:data][1][:attributes][:first_name]).to eq("Kirstin")
-      expect(customers[:data][2][:attributes][:first_name]).to eq("Albina")
-      expect(customers[:data][3][:attributes][:first_name]).to eq("Karol")
-
-      customers[:data].each do |customer|
-        expect(customer[:attributes]).to be_a(Hash)
-        expect(customer[:attributes]).to have_key(:first_name)
-        expect(customer[:attributes][:first_name]).to be_a(String)
-
-        expect(customer[:attributes]).to have_key(:last_name)
-        expect(customer[:attributes][:last_name]).to be_a(String)
-      end
-
-    end
-  end
-  
+describe "Little Shop API", type: :request do  
   describe "happy paths" do
 
     it "shows customer names by merchant" do

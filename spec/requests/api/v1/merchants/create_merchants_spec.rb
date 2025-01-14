@@ -21,7 +21,8 @@ RSpec.describe "Create a Merchant", type: :request do
       expect(response).not_to be_successful
       expect(response.status).to eq(422)
       error = JSON.parse(response.body, symbolize_names: true)
-      expect(error[:error]).to eq("unprocessable entity")
+
+      expect(error[:errors]).to eq(["unprocessable entity"])
     end
   end
 end

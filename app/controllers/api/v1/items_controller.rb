@@ -33,7 +33,7 @@ class Api::V1::ItemsController < ApplicationController
     if item.update(item_params)
       render json: ItemSerializer.new(item), status: :ok
     else
-      render_error(item.errors.full_messages.join(", "), :unprocessable_entity)
+      render_error(item.errors.full_messages.join(", "), 400)
     end
   end
 
@@ -44,14 +44,14 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def find_merchant
-    begin
-      item = Item.find(params[:id]) 
-      merchant = item.merchant
-      render json: { name: merchant.name}
+    # begin
+    item = Item.find(params[:id]) 
+    merchant = item.merchant
+    render json: MerchantSerializer.new(merchant), status: :ok
 
-    rescue ActiveRecord::RecordNotFound
-      render json: { error: "Could not find Item with ID ##{params[:id]}."}, status: :not_found
-    end
+    # rescue ActiveRecord::RecordNotFound
+    #   render json: { error: "Could not find Item with ID ##{params[:id]}."}, status: :not_found
+    # end
   end
 
   private

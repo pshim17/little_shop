@@ -4,7 +4,6 @@ RSpec.describe "Update a Merchant", type: :request do
   it "can update a merchant" do
     merchant      = Merchant.create!(name: "Nike")
     merchant_name = {name: "Amazon"}
-    
     patch "/api/v1/merchants/#{merchant.id}",params: merchant_name 
 
     expect(response).to be_successful
@@ -30,8 +29,8 @@ RSpec.describe "Update a Merchant", type: :request do
 
       expect(response).to_not be_successful
       expect(response.status).to eq(422)
-      error = JSON.parse(response.body, symbolize_names: true)[:error]
-      expect(error).to eq("unprocessable entity")
+      error = JSON.parse(response.body, symbolize_names: true)[:errors]
+      expect(error).to eq(["unprocessable entity"])
     end
   end
 end

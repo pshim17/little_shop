@@ -19,7 +19,7 @@ RSpec.describe "Little Shop API", type: :request do
     unit_price: 65.23
     }
     # Send a PATCH request to update the item
-    patch "/api/v1/items/#{test_item_1.id}", params: { item: updated_attributes }
+    put "/api/v1/items/#{test_item_1.id}", params: { item: updated_attributes }
 
     # Reload the item to reflect updated changes
     test_item_1.reload
@@ -45,12 +45,12 @@ RSpec.describe "Little Shop API", type: :request do
   )
    
     # Send a GET request to get the merchant data
-    get "/api/v1/items/#{test_item_1.id}/find_merchant"
+    get "/api/v1/items/#{test_item_1.id}/merchant"
 
     expect(response).to be_successful
 
     the_merchant = JSON.parse(response.body, symbolize_names: true)
-    expect(the_merchant[:name]).to eq("Test Merchant") 
+    expect(the_merchant[:data][:attributes][:name]).to eq("Test Merchant") 
   end
 
   it "will gracefully handle if a Item id doesn't exist" do
@@ -63,13 +63,15 @@ RSpec.describe "Little Shop API", type: :request do
     merchant_id: test_merchant.id
     )
 
-    get "/api/v1/items/3423978540937t3908275394087290457/find_merchant"
+    get "/api/v1/items/3423978540937t3908275394087290457/merchant"
 
     expect(response).to_not be_successful
     expect(response.status).to eq(404)
 
     data = JSON.parse(response.body, symbolize_names: true)
-    expect(data[:error]).to eq("Could not find Item with ID #3423978540937t3908275394087290457.")
+    # require'pry';binding.pry
+    expect(data[:errors]).to eq(["Item not found"])
+
   end 
 
 end
