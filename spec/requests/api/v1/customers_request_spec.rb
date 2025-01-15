@@ -31,12 +31,9 @@ describe "Little Shop API", type: :request do
       invoice4 = Invoice.create!(customer_id: customer4.id, merchant_id: test_merchant2.id, status: "shipped")
     
       get "/api/v1/merchants/#{test_merchant1.id}/customers" 
-      # puts response.status
-      # puts response.body
 
       expect(response).to be_successful
       
-
       customers = JSON.parse(response.body, symbolize_names: true)
 
       expect(customers[:data]).to be_an(Array)
@@ -56,7 +53,6 @@ describe "Little Shop API", type: :request do
         expect(customer[:attributes]).to have_key(:last_name)
         expect(customer[:attributes][:last_name]).to be_a(String)
       end
-      
     end
   end
 
@@ -81,6 +77,5 @@ describe "Little Shop API", type: :request do
       expect(response.status).to eq(404)
       expect(customers[:error]).to eq("Merchant ID# 509484320583094583049582904852048 not found.")
     end
-
   end
 end

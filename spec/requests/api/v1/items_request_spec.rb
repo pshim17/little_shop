@@ -69,9 +69,16 @@ RSpec.describe "Little Shop API", type: :request do
     expect(response.status).to eq(404)
 
     data = JSON.parse(response.body, symbolize_names: true)
-    # require'pry';binding.pry
     expect(data[:errors]).to eq(["Item not found"])
-
   end 
 
+  it "will gracefully handle if Merchant has no items" do
+
+    get "/api/v1/merchants/98989/items"
+
+    expect(response).to_not be_successful
+    expect(response.status).to eq(404)
+    error = JSON.parse(response.body, symbolize_names: true)[:error][0][:title]
+    expect(error).to eq("Couldn't find Merchant with 'id'=98989")
+  end
 end
